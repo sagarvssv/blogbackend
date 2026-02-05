@@ -28,7 +28,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Protected routes (require authentication)
  postRouter.delete("/:postId/comments/:commentId", authMiddleware, deleteComment);
- postRouter.post("/", authMiddleware, upload.single("coverImage"), createPost);
+ postRouter.post("/",  upload.single("coverImage"), createPost);
  postRouter.put("/:id", authMiddleware, upload.single("coverImage"), editPost);
  postRouter.delete("/:id", authMiddleware, deletePost);
 

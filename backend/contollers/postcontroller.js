@@ -8,13 +8,18 @@ import {
 /* CREATE POST - Protected (requires login) */
 const createPost = async (req, res) => {
   try {
-    const { title, content, subtitle } = req.body;
+    const { title, content, subtitle,imageUrl } = req.body;
 
     let coverImage = "";
     let coverImageId = "";
 
     if (req.file) {
       const uploadResult = await uploadToCloudinary(req.file, "blog/posts");
+      coverImage = uploadResult.url;
+      coverImageId = uploadResult.public_id;
+    }
+    else if(imageUrl){
+     const uploadResult = await uploadToCloudinary({ path: imageUrl }, "blog/posts");
       coverImage = uploadResult.url;
       coverImageId = uploadResult.public_id;
     }

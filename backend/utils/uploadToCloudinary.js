@@ -1,8 +1,9 @@
 import cloudinary from "../config/cloudinary.js";
 
-export const uploadToCloudinary = async (file, folder = "blog") => {
+export const uploadToCloudinary = async (fileOrUrl, folder = "blog") => {
   try {
-    const result = await cloudinary.uploader.upload(file.path, {
+    const path = fileOrUrl.path || fileorUrl.url;
+    const result = await cloudinary.uploader.upload(path, {
       folder,
       resource_type: "auto",
     });
