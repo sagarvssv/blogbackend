@@ -19,7 +19,7 @@ const createPost = async (req, res) => {
       coverImageId = uploadResult.public_id;
     }
     else if(imageUrl && imageUrl.length > 0){
-     const uploadResult = await uploadToCloudinary({ path: imageUrl }, "blog/posts");
+     const uploadResult = await uploadToCloudinary(imageUrl , "blog/posts");
       coverImage = uploadResult.url;
       coverImageId = uploadResult.public_id;
     }
