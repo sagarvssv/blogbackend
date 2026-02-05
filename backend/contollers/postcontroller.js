@@ -13,12 +13,12 @@ const createPost = async (req, res) => {
     let coverImage = "";
     let coverImageId = "";
 
-    if (req.file) {
-      const uploadResult = await uploadToCloudinary(req.file, "blog/posts");
+    if (req.file && req.file.path) {
+      const uploadResult = await uploadToCloudinary(req.file.path, "blog/posts");
       coverImage = uploadResult.url;
       coverImageId = uploadResult.public_id;
     }
-    else if(imageUrl){
+    else if(imageUrl && imageUrl.length > 0){
      const uploadResult = await uploadToCloudinary({ path: imageUrl }, "blog/posts");
       coverImage = uploadResult.url;
       coverImageId = uploadResult.public_id;
