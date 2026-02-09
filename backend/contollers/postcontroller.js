@@ -79,14 +79,16 @@ const editPost = async (req, res) => {
     if (content) post.content = content;
     if (subtitle) post.subtitle = subtitle;
 
-    if (req.file) {
+    if (req.file?.path) {
       if (post.coverImageId) {
         await deleteFromCloudinary(post.coverImageId);
       }
 
-      const uploadResult = await uploadToCloudinary(req.file, "blog/posts");
+      const uploadResult = await uploadToCloudinary(req.file.path, "blog/posts");
       post.coverImage = uploadResult.url;
       post.coverImageId = uploadResult.public_id;
+            fs.unlinkSync(req.file.path);
+
     }
 
     const updatedPost = await post.save();
