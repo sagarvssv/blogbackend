@@ -31,7 +31,7 @@ const postRouter = express.Router();
 
 // Protected routes (require authentication)
  postRouter.delete("/:postId/comments/:commentId", authMiddleware, deleteComment);
- postRouter.put("/:id", authMiddleware, upload.single("coverImage"), editPost);
+ postRouter.put("/:id", upload.single("coverImage"), editPost);
  postRouter.delete("/:id", authMiddleware, deletePost);
 
 export default  postRouter;

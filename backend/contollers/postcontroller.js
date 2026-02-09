@@ -68,37 +68,67 @@ const getSinglePost = async (req, res) => {
 /* EDIT POST - Protected (requires login) */
 const editPost = async (req, res) => {
   try {
+    console.log("=== Edit Post Request ===");
+    console.log("Has file upload:", !!req.file);
+    console.log("Has coverImage in body:", !!req.body.coverImage);
+    console.log("CoverImage type:", typeof req.body.coverImage);
+    console.log("CoverImage preview:", req.body.coverImage?.substring(0, 50) + "...");
+    
     const post = await Post.findById(req.params.id);
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const { title, content, subtitle } = req.body;
+    const { title, content, subtitle, coverImage } = req.body;
 
     if (title) post.title = title;
     if (content) post.content = content;
     if (subtitle) post.subtitle = subtitle;
 
-    if (req.file?.path) {
-      if (post.coverImageId) {
-        await deleteFromCloudinary(post.coverImageId);
+    // Handle file upload (multipart form data with actual file)
+    if (req.file) {
+      try {
+        if (post.coverImageId) {
+          await deleteFromCloudinary(post.coverImageId);
+        }
+
+        const uploadResult = await uploadToCloudinary(req.file.path, "blog/posts");
+        post.coverImage = uploadResult.url;
+        post.coverImageId = uploadResult.public_id;
+
+        fs.unlinkSync(req.file.path);
+      } catch (uploadError) {
+        if (req.file.path && fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
+        throw uploadError;
       }
+    } 
+    // Handle base64 image or URL
+    else if (coverImage && coverImage !== post.coverImage) {
+      try {
+        if (post.coverImageId) {
+          await deleteFromCloudinary(post.coverImageId);
+        }
 
-      const uploadResult = await uploadToCloudinary(req.file.path, "blog/posts");
-      post.coverImage = uploadResult.url;
-      post.coverImageId = uploadResult.public_id;
-            fs.unlinkSync(req.file.path);
-
+        // Cloudinary can handle both URLs and base64 data URLs
+        const uploadResult = await uploadToCloudinary(coverImage, "blog/posts");
+        post.coverImage = uploadResult.url;
+        post.coverImageId = uploadResult.public_id;
+      } catch (uploadError) {
+        console.error("Image upload error:", uploadError);
+        throw uploadError;
+      }
     }
 
     const updatedPost = await post.save();
     res.status(200).json(updatedPost);
 
   } catch (error) {
+    console.error("Edit post error:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
 /* DELETE POST - Protected (requires login) */
 const deletePost = async (req, res) => {
   try {
