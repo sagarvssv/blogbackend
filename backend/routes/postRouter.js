@@ -13,10 +13,13 @@ import {
   deleteComment
 } from "../contollers/postcontroller.js";
 import { authMiddleware } from "../middlewares/auth.js";
-import multer from "multer";
+import upload from "../middlewares/multer.js";
 
 const postRouter = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+
+
+
+ postRouter.post("/",  upload.single("coverImage"), createPost);
 
 // Public routes
  postRouter.get("/all", getPosts);
@@ -28,7 +31,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Protected routes (require authentication)
  postRouter.delete("/:postId/comments/:commentId", authMiddleware, deleteComment);
- postRouter.post("/",  upload.single("coverImage"), createPost);
  postRouter.put("/:id", authMiddleware, upload.single("coverImage"), editPost);
  postRouter.delete("/:id", authMiddleware, deletePost);
 

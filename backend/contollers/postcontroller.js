@@ -4,6 +4,7 @@ import {
   uploadToCloudinary,
   deleteFromCloudinary
 } from "../utils/uploadToCloudinary.js";
+import fs from "fs";
 
 /* CREATE POST - Protected (requires login) */
 const createPost = async (req, res) => {
@@ -13,10 +14,11 @@ const createPost = async (req, res) => {
     let coverImage = "";
     let coverImageId = "";
 
-    if (req.file && req.file.path) {
+    if (req.file?.path) {
       const uploadResult = await uploadToCloudinary(req.file.path, "blog/posts");
       coverImage = uploadResult.url;
       coverImageId = uploadResult.public_id;
+            fs.unlinkSync(req.file.path);
     }
     else if(imageUrl && imageUrl.length > 0){
      const uploadResult = await uploadToCloudinary(imageUrl , "blog/posts");

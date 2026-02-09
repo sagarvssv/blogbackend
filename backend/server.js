@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import { Server } from 'socket.io'; 
 import userRouter from './routes/adminRouter.js';
 import postRouter from './routes/postRouter.js';
+import job from './utils/cron.js';
 
 connectDB();
 
@@ -21,6 +22,7 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors());
+job.start();
 app.use(express.json());
 
 
