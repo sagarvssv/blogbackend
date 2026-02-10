@@ -21,7 +21,9 @@ const io = new Server(server, {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://blog.vcloudmaster.com",
+}));
 job.start();
 app.use(express.json());
 
