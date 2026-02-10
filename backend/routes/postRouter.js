@@ -19,7 +19,7 @@ const postRouter = express.Router();
 
 
 
- postRouter.post("/",  upload.single("coverImage"), createPost);
+ postRouter.post("/create",  upload.single("coverImage"), createPost);
 
 // Public routes
  postRouter.get("/all", getPosts);
