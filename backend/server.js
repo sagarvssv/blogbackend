@@ -24,7 +24,7 @@ const io = new Server(server, {
 app.use(cors({
   origin: [
     "http://localhost:5173",   // local dev
-    "https://yourdomain.com"   // production
+    "https://blog.vcloudmaster.com"   // production
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
