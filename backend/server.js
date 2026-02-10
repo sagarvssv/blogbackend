@@ -22,7 +22,12 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors({
-  origin: "https://blog.vcloudmaster.com",
+  origin: [
+    "http://localhost:5173",   // local dev
+    "https://yourdomain.com"   // production
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 job.start();
 app.use(express.json());
