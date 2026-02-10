@@ -24,9 +24,8 @@ const io = new Server(server, {
 app.use(cors({
   origin: [
     "http://localhost:5173",  
-    "https://chipper-sunflower-bdc737.netlify.app",
-                                                  "http://localhost:5174", // local dev
-    "https://blog.vcloudmaster.com"   // production
+    "https://www.vcloudmaster.com",                     
+    "https://blog.vcloudmaster.com"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
