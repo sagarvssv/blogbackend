@@ -23,7 +23,9 @@ const io = new Server(server, {
 // Middleware
 app.use(cors({
   origin: [
-    "http://localhost:5173",   // local dev
+    "http://localhost:5173",  
+    "https://chipper-sunflower-bdc737.netlify.app",
+                                                  "http://localhost:5174", // local dev
     "https://blog.vcloudmaster.com"   // production
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
